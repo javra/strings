@@ -19,6 +19,11 @@ open import Data.Nat.Properties public
 +2suc {suc n} = cong suc +2suc
 {-# REWRITE +2suc #-}
 
++3suc : ∀{n} → n + 3 ≡ suc (suc (suc n))
++3suc {zero}  = refl
++3suc {suc n} = cong suc +3suc
+{-# REWRITE +3suc #-}
+
 infixl 3 _■_
 infixl 4 _~_
 infixl 4 _~*_
@@ -49,9 +54,9 @@ d ^⊗ suc k = d ⊗ (d ^⊗ k)
 /n {suc n} = ∣ ^⊗ n ⊗ / · /n {n} ⊗ ∣
 
 /⁻¹ : D 2 2 
-/⁻¹ =   ∣ ⊗ ∣ ⊗ ∩
-      · ∣ ⊗ / ⊗ ∣
-      · ∣ ⊗ ∣ ⊗ ∪
+/⁻¹ =   ∣ ⊗ ∣ ⊗   ∩
+      · ∣ ⊗   /   ⊗ ∣
+      ·   ∪   ⊗ ∣ ⊗ ∣
 
 data _~_ : ∀ {m n} → D m n → D m n → Prop where
   ⊗ε    : ∀{m n}{d : D m n} → d ⊗ ε ~ d
@@ -75,6 +80,7 @@ data _~_ : ∀ {m n} → D m n → D m n → Prop where
   ∩//∩  : (∣ ⊗ ∩ ⊗ ∣) · (/⁻¹ ⊗ /) · (∣ ⊗ ∪ ⊗ ∣) ~ ∣ ⊗ ∣ -- Reidemeister Type II
   ///   : (/⁻¹ ⊗ ∣) · (∣ ⊗ /⁻¹) · (/ ⊗ ∣) ~ (∣ ⊗ /) · (/⁻¹ ⊗ ∣) · (∣ ⊗ /⁻¹) -- Reidemeister Type III
   ∩·R   : ∀{l r} → (∣n⊗∣m l ∩ r) · R ~ R · (∣n⊗∣m l ∩ r)
+  /·R   : ∀{l r} → (∣n⊗∣m l / r) · R ~ R · (∣n⊗∣m l / r)
   M·R   : ∀{l r} → (∣n⊗∣m l M r) · R ~ R · ∣n⊗∣m l M r
 
 data _~*_ {m n} : D m n → D m n → Prop where
