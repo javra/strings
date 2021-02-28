@@ -1,6 +1,6 @@
 {-# OPTIONS --prop --rewriting --allow-unsolved-metas #-}
 
-open import Relation.Binary.PropositionalEquality public using (_≡_; refl) public
+open import Relation.Binary.PropositionalEquality public using (_≡_; refl; cong; cong-app) public
 open import Data.Nat public
 open import Data.Nat.Properties public
 
@@ -8,6 +8,16 @@ open import Data.Nat.Properties public
 {-# REWRITE *-identityʳ #-}
 {-# REWRITE +-identityʳ #-}
 {-# REWRITE +-assoc #-}
+
++1suc : ∀{n} → n + 1 ≡ suc n
++1suc {zero}  = refl
++1suc {suc n} = cong suc +1suc
+{-# REWRITE +1suc #-}
+
++2suc : ∀{n} → n + 2 ≡ suc (suc n)
++2suc {zero}  = refl
++2suc {suc n} = cong suc +2suc
+{-# REWRITE +2suc #-}
 
 infixl 3 _■_
 infixl 4 _~_
@@ -31,8 +41,12 @@ _^⊗_ : ∀{m n} → D m n → (k : ℕ) → D (k * m) (k * n)
 d ^⊗ zero  = ε
 d ^⊗ suc k = d ⊗ (d ^⊗ k)
 
-∣∣⊗∣∣ : ∀{m n} → (l : ℕ) → D m n → (r : ℕ) → D (l + m + r) (l + n + r)
-∣∣⊗∣∣ l d r = ∣ ^⊗ l ⊗ d ⊗ ∣ ^⊗ r
+∣n⊗∣m : ∀{m n} → (l : ℕ) → D m n → (r : ℕ) → D (l + m + r) (l + n + r)
+∣n⊗∣m l d r = ∣ ^⊗ l ⊗ d ⊗ ∣ ^⊗ r
+
+/n : ∀{n} → D (1 + n) (1 + n)
+/n {zero} = ∣
+/n {suc n} = ∣ ^⊗ n ⊗ / · /n {n} ⊗ ∣
 
 /⁻¹ : D 2 2 
 /⁻¹ =   ∣ ⊗ ∣ ⊗ ∩
@@ -52,7 +66,7 @@ data _~_ : ∀ {m n} → D m n → D m n → Prop where
   ⊗⊗    : ∀{m m' m'' n n' n''}{d : D m n}{e : D m' n'}{f : D m'' n''} → d ⊗ (e ⊗ f) ~ d ⊗ e ⊗ f
   ~⊗    : ∀{m n k l}{d d' : D m n}{e : D k l} → d ~ d' → d ⊗ e ~ d' ⊗ e
   ⊗~    : ∀{m n k l}{d : D m n}{e e' : D k l} → e ~ e' → d ⊗ e ~ d ⊗ e'
-  ⊗·⊗   : ∀{m n k l n' l'}{d : D m n}{e : D k l}{d' : D n n'}{e' : D l l'} → (d · d') ⊗ (e · e') ~ d ⊗ e · d' ⊗ e'
+  ·⊗·   : ∀{m n k l n' l'}{d : D m n}{e : D k l}{d' : D n n'}{e' : D l l'} → (d · d') ⊗ (e · e') ~ d ⊗ e · d' ⊗ e'
   ∩∪    : (∩ ⊗ ∣) · (∣ ⊗ ∪) ~ ∣
   ∪∩    : (∣ ⊗ ∩) · (∪ ⊗ ∣) ~ ∣
   ∩·/   : ∩ · / ~ ∩ -- Reidemeister Type I
@@ -60,8 +74,8 @@ data _~_ : ∀ {m n} → D m n → D m n → Prop where
   //⁻¹  : / · /⁻¹ ~ ∣ ⊗ ∣ -- Reidemeister Type II
   ∩//∩  : (∣ ⊗ ∩ ⊗ ∣) · (/⁻¹ ⊗ /) · (∣ ⊗ ∪ ⊗ ∣) ~ ∣ ⊗ ∣ -- Reidemeister Type II
   ///   : (/⁻¹ ⊗ ∣) · (∣ ⊗ /⁻¹) · (/ ⊗ ∣) ~ (∣ ⊗ /) · (/⁻¹ ⊗ ∣) · (∣ ⊗ /⁻¹) -- Reidemeister Type III
-  ∩·R   : ∀{l r} → (∣∣⊗∣∣ l ∩ r) · R ~ R · (∣∣⊗∣∣ l ∩ r)
-  M·R   : ∀{l r} → (∣∣⊗∣∣ l M r) · R ~ R · ∣∣⊗∣∣ l M r
+  ∩·R   : ∀{l r} → (∣n⊗∣m l ∩ r) · R ~ R · (∣n⊗∣m l ∩ r)
+  M·R   : ∀{l r} → (∣n⊗∣m l M r) · R ~ R · ∣n⊗∣m l M r
 
 data _~*_ {m n} : D m n → D m n → Prop where
   ι    : ∀{d d'} → d ~ d' → d ~* d'
