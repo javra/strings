@@ -37,31 +37,33 @@ d ^⊗ suc k = d ⊗ (d ^⊗ k)
       ·   ∪   ⊗ ∣ ⊗ ∣
 
 data _~_ : ∀ {m n} → D m n → D m n → Prop where
-  ⊗ε    : ∀{m n}{d : D m n} → d ⊗ ε ~ d
-  ε⊗    : ∀{m n}{d : D m n} → ε ⊗ d ~ d
-  ·ε    : ∀{m}{d : D m 0} → d · ε ~ d
-  ε·    : ∀{n}{d : D 0 n} → ε · d ~ d
-  ··    : ∀{m n k l}{d : D m n}{e : D n k}{f : D k l} → d · (e · f) ~ d · e · f
-  ∣n·   : ∀{m n}{d : D m n} → ∣ ^⊗ m · d ~ d
-  ·∣n   : ∀{m n}{d : D m n} → d · ∣ ^⊗ n ~ d
-  ~·    : ∀{m n k}{d d' : D m n}{e : D n k} → d ~ d' → d · e ~ d' · e
-  ·~    : ∀{m n k}{d : D m n}{e e' : D n k} → e ~ e' → d · e ~ d · e'
-  ⊗⊗    : ∀{m m' m'' n n' n''}{d : D m n}{e : D m' n'}{f : D m'' n''} → d ⊗ (e ⊗ f) ~ d ⊗ e ⊗ f
-  ~⊗    : ∀{m n k l}{d d' : D m n}{e : D k l} → d ~ d' → d ⊗ e ~ d' ⊗ e
-  ⊗~    : ∀{m n k l}{d : D m n}{e e' : D k l} → e ~ e' → d ⊗ e ~ d ⊗ e'
-  ·⊗·   : ∀{m n k l n' l'}{d : D m n}{e : D k l}{d' : D n n'}{e' : D l l'} → (d · d') ⊗ (e · e') ~ d ⊗ e · d' ⊗ e'
-  ∩∪    : (∩ ⊗ ∣) · (∣ ⊗ ∪) ~ ∣
-  ∪∩    : (∣ ⊗ ∩) · (∪ ⊗ ∣) ~ ∣
-  ∩·/   : ∩ · / ~ ∩ -- Reidemeister Type I
-  ∩/∩   : ∩ ⊗ ∣ · ∣ ⊗ / · ∪ ⊗ ∣ ~ ∣ -- Reidemeister Type I
-  //⁻¹  : / · /⁻¹ ~ ∣ ⊗ ∣ -- Reidemeister Type II
-  ∩//∩  : ∣ ⊗ ∩ ⊗ ∣ · /⁻¹ ⊗ / · ∣ ⊗ ∪ ⊗ ∣ ~ ∣ ⊗ ∣ -- Reidemeister Type II
-  ///   : /⁻¹ ⊗ ∣ · ∣ ⊗ /⁻¹ · / ⊗ ∣ ~ ∣ ⊗ / · /⁻¹ ⊗ ∣ · ∣ ⊗ /⁻¹ -- Reidemeister Type III
-  ∩·R   : ∀{l r} → ∣n⊗∣m l ∩ r · R ~ R · ∣n⊗∣m l ∩ r
-  ∪·R   : ∀{l r} → ∣n⊗∣m l ∪ r · R ~ R · ∣n⊗∣m l ∪ r
-  /·R   : ∀{l r} → ∣n⊗∣m l / r · R ~ R · ∣n⊗∣m l / r
-  /nR   : ∀{n} → /n {n} · ∣ ⊗ R ~ R ⊗ ∣ · /n
-  M·R   : ∀{l r} → ∣n⊗∣m l M r · R ~ R · ∣n⊗∣m l M r
+  ⊗ε     : ∀{m n}{d : D m n} → d ⊗ ε ~ d
+  ε⊗     : ∀{m n}{d : D m n} → ε ⊗ d ~ d
+  ·ε     : ∀{m}{d : D m 0} → d · ε ~ d
+  ε·     : ∀{n}{d : D 0 n} → ε · d ~ d
+  ··     : ∀{m n k l}{d : D m n}{e : D n k}{f : D k l} → d · (e · f) ~ d · e · f
+  ∣n·    : ∀{m n}{d : D m n} → ∣ ^⊗ m · d ~ d
+  ·∣n    : ∀{m n}{d : D m n} → d · ∣ ^⊗ n ~ d
+  ~·     : ∀{m n k}{d d' : D m n}{e : D n k} → d ~ d' → d · e ~ d' · e
+  ·~     : ∀{m n k}{d : D m n}{e e' : D n k} → e ~ e' → d · e ~ d · e'
+  ⊗⊗     : ∀{m m' m'' n n' n''}{d : D m n}{e : D m' n'}{f : D m'' n''} → d ⊗ (e ⊗ f) ~ d ⊗ e ⊗ f
+  ~⊗     : ∀{m n k l}{d d' : D m n}{e : D k l} → d ~ d' → d ⊗ e ~ d' ⊗ e
+  ⊗~     : ∀{m n k l}{d : D m n}{e e' : D k l} → e ~ e' → d ⊗ e ~ d ⊗ e'
+  ·⊗·    : ∀{m n k l n' l'}{d : D m n}{e : D k l}{d' : D n n'}{e' : D l l'} → (d · d') ⊗ (e · e') ~ d ⊗ e · d' ⊗ e'
+  ∩∪     : (∩ ⊗ ∣) · (∣ ⊗ ∪) ~ ∣
+  ∪∩     : (∣ ⊗ ∩) · (∪ ⊗ ∣) ~ ∣
+  ∩/     : ∩ · / ~ ∩ -- Reidemeister Type I
+  /∪     : / · ∪ ~ ∪ -- Reidemeister Type I
+  ∣//∣∣∪ : ∣ ⊗ / · / ⊗ ∣ · ∣ ⊗ ∪ ~ ∪ ⊗ ∣ -- Reidemeister Type II
+  /∣∣/∪∣ : / ⊗ ∣ · ∣ ⊗ / · ∪ ⊗ ∣ ~ ∣ ⊗ ∪ -- Reidemeister Type II
+  ∩∣∣//∣ : ∩ ⊗ ∣ · ∣ ⊗ / · / ⊗ ∣ ~ ∣ ⊗ ∩ -- Reidemeister Type II
+  ∣∩/∣∣/ : ∣ ⊗ ∩ · / ⊗ ∣ · ∣ ⊗ / ~ ∩ ⊗ ∣ -- Reidemeister Type II
+  ///    : /⁻¹ ⊗ ∣ · ∣ ⊗ /⁻¹ · / ⊗ ∣ ~ ∣ ⊗ / · /⁻¹ ⊗ ∣ · ∣ ⊗ /⁻¹ -- Reidemeister Type III
+  ∩·R    : ∀{l r} → ∣n⊗∣m l ∩ r · R ~ R · ∣n⊗∣m l ∩ r
+  ∪·R    : ∀{l r} → ∣n⊗∣m l ∪ r · R ~ R · ∣n⊗∣m l ∪ r
+  /·R    : ∀{l r} → ∣n⊗∣m l / r · R ~ R · ∣n⊗∣m l / r
+  /nR    : ∀{n} → /n {n} · ∣ ⊗ R ~ R ⊗ ∣ · /n
+  M·R    : ∀{l r} → ∣n⊗∣m l M r · R ~ R · ∣n⊗∣m l M r
 
 data _~*_ {m n} : D m n → D m n → Prop where
   ι    : ∀{d d'} → d ~ d' → d ~* d'
