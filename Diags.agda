@@ -1,28 +1,6 @@
 {-# OPTIONS --prop --rewriting --allow-unsolved-metas #-}
 
-open import Relation.Binary.PropositionalEquality public using (_≡_; refl; cong; cong-app) public
-open import Data.Nat public
-open import Data.Nat.Properties public
-
-{-# BUILTIN REWRITE _≡_ #-}
-{-# REWRITE *-identityʳ #-}
-{-# REWRITE +-identityʳ #-}
-{-# REWRITE +-assoc #-}
-
-+1suc : ∀{n} → n + 1 ≡ suc n
-+1suc {zero}  = refl
-+1suc {suc n} = cong suc +1suc
-{-# REWRITE +1suc #-}
-
-+2suc : ∀{n} → n + 2 ≡ suc (suc n)
-+2suc {zero}  = refl
-+2suc {suc n} = cong suc +2suc
-{-# REWRITE +2suc #-}
-
-+3suc : ∀{n} → n + 3 ≡ suc (suc (suc n))
-+3suc {zero}  = refl
-+3suc {suc n} = cong suc +3suc
-{-# REWRITE +3suc #-}
+open import StrictNat public
 
 infixl 3 _■_
 infixl 4 _~_
