@@ -31,11 +31,6 @@ d ^⊗ suc k = d ⊗ (d ^⊗ k)
 /n {zero} = ∣
 /n {suc n} = ∣ ^⊗ n ⊗ / · /n {n} ⊗ ∣
 
-/⁻¹ : D 2 2 
-/⁻¹ =   ∣ ⊗ ∣ ⊗   ∩
-      · ∣ ⊗   /   ⊗ ∣
-      ·   ∪   ⊗ ∣ ⊗ ∣
-
 data _~_ : ∀ {m n} → D m n → D m n → Prop where
   ⊗ε     : ∀{m n}{d : D m n} → d ⊗ ε ~ d
   ε⊗     : ∀{m n}{d : D m n} → ε ⊗ d ~ d
@@ -58,12 +53,13 @@ data _~_ : ∀ {m n} → D m n → D m n → Prop where
   /∣∣/∪∣ : / ⊗ ∣ · ∣ ⊗ / · ∪ ⊗ ∣ ~ ∣ ⊗ ∪ -- Reidemeister Type II
   ∩∣∣//∣ : ∩ ⊗ ∣ · ∣ ⊗ / · / ⊗ ∣ ~ ∣ ⊗ ∩ -- Reidemeister Type II
   ∣∩/∣∣/ : ∣ ⊗ ∩ · / ⊗ ∣ · ∣ ⊗ / ~ ∩ ⊗ ∣ -- Reidemeister Type II
-  ///    : /⁻¹ ⊗ ∣ · ∣ ⊗ /⁻¹ · / ⊗ ∣ ~ ∣ ⊗ / · /⁻¹ ⊗ ∣ · ∣ ⊗ /⁻¹ -- Reidemeister Type III
+  ///    : / ⊗ ∣ · ∣ ⊗ / · / ⊗ ∣ ~ ∣ ⊗ / · / ⊗ ∣ · ∣ ⊗ / -- Reidemeister Type III
   ∩·R    : ∀{l r} → ∣n⊗∣m l ∩ r · R ~ R · ∣n⊗∣m l ∩ r
   ∪·R    : ∀{l r} → ∣n⊗∣m l ∪ r · R ~ R · ∣n⊗∣m l ∪ r
   /·R    : ∀{l r} → ∣n⊗∣m l / r · R ~ R · ∣n⊗∣m l / r
   /nR    : ∀{n} → /n {n} · ∣ ⊗ R ~ R ⊗ ∣ · /n
   M·R    : ∀{l r} → ∣n⊗∣m l M r · R ~ R · ∣n⊗∣m l M r
+  /nM    : /n · ∣ ⊗ M ~ M ⊗ ∣ · /n
 
 data _~*_ {m n} : D m n → D m n → Prop where
   ι    : ∀{d d'} → d ~ d' → d ~* d'
