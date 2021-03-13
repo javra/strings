@@ -31,6 +31,10 @@ d ^⊗ suc k = d ⊗ (d ^⊗ k)
 /n {zero} = ∣
 /n {suc n} = ∣ ^⊗ n ⊗ / · /n {n} ⊗ ∣
 
+/-n : ∀{n} → D (1 + n) (1 + n)
+/-n {zero}  = ∣
+/-n {suc n} = / ⊗ ∣ ^⊗ n · /-n ⊗ ∣
+
 data _~_ : ∀ {m n} → D m n → D m n → Prop where
   ⊗ε     : ∀{m n}{d : D m n} → d ⊗ ε ~ d
   ε⊗     : ∀{m n}{d : D m n} → ε ⊗ d ~ d
@@ -54,12 +58,14 @@ data _~_ : ∀ {m n} → D m n → D m n → Prop where
   ∩∣∣//∣ : ∩ ⊗ ∣ · ∣ ⊗ / · / ⊗ ∣ ~ ∣ ⊗ ∩ -- Reidemeister Type II
   ∣∩/∣∣/ : ∣ ⊗ ∩ · / ⊗ ∣ · ∣ ⊗ / ~ ∩ ⊗ ∣ -- Reidemeister Type II
   ///    : / ⊗ ∣ · ∣ ⊗ / · / ⊗ ∣ ~ ∣ ⊗ / · / ⊗ ∣ · ∣ ⊗ / -- Reidemeister Type III
-  ∩·R    : ∀{l r} → ∣n⊗∣m l ∩ r · R ~ R · ∣n⊗∣m l ∩ r
-  ∪·R    : ∀{l r} → ∣n⊗∣m l ∪ r · R ~ R · ∣n⊗∣m l ∪ r
-  /·R    : ∀{l r} → ∣n⊗∣m l / r · R ~ R · ∣n⊗∣m l / r
-  /nR    : ∀{n} → /n {n} · ∣ ⊗ R ~ R ⊗ ∣ · /n
-  M·R    : ∀{l r} → ∣n⊗∣m l M r · R ~ R · ∣n⊗∣m l M r
-  /nM    : /n · ∣ ⊗ M ~ M ⊗ ∣ · /n
+  ∩·R    : ∀{l r} → ∣n⊗∣m l ∩ r · R ~ R · ∣n⊗∣m l ∩ r -- Loop of String moves through R
+  ∪·R    : ∀{l r} → ∣n⊗∣m l ∪ r · R ~ R · ∣n⊗∣m l ∪ r -- Loop of String moves through R
+  /·R    : ∀{l r} → ∣n⊗∣m l / r · R ~ R · ∣n⊗∣m l / r -- Braiding moves through R
+  /nR    : ∀{n} → /n {n} · ∣ ⊗ R ~ R ⊗ ∣ · /n -- Lambda Law for R
+  /-nR   : ∀{n} → /-n {n} · R ⊗ ∣ ~ ∣ ⊗ R · /-n -- Lambda Law for R
+  M·R    : ∀{l r} → ∣n⊗∣m l M r · R ~ R · ∣n⊗∣m l M r -- M moves through R
+  /nM    : /n · ∣ ⊗ M ~ M ⊗ ∣ · /n -- Lambda Law for M
+  /-nM   : /-n · M ⊗ ∣ ~ ∣ ⊗ M · /-n -- Lambda Law for M
 
 data _~*_ {m n} : D m n → D m n → Prop where
   ι    : ∀{d d'} → d ~ d' → d ~* d'
