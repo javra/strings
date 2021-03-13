@@ -26,6 +26,9 @@ open import Sliding
 ∣n⊗·∣n⊗ : ∀{m n k l}{d : D m n}{e : D n k} → ∣ ^⊗ l ⊗ d · ∣ ^⊗ l ⊗ e ~* ∣ ^⊗ l ⊗ (d · e)
 ∣n⊗·∣n⊗ = - (ι ·⊗·) ■ ~⊗* (ι ∣n·)
 
+⊗∣n·⊗∣n : ∀{m n k l}{d : D m n}{e : D n k} → d ⊗ ∣ ^⊗ l · e ⊗ ∣ ^⊗ l ~* (d · e) ⊗ ∣ ^⊗ l
+⊗∣n·⊗∣n = - (ι ·⊗·) ■ ⊗~* (ι ∣n·)
+
 ∣^⊗suc : ∀{n} → ∣ ^⊗ (suc n) ~* ∣ ^⊗ n ⊗ ∣
 ∣^⊗suc {zero}  = ι ⊗ε ■ - (ι ε⊗)
 ∣^⊗suc {suc n} = ⊗~* ∣^⊗suc ■ ι ⊗⊗

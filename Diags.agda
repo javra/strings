@@ -33,7 +33,7 @@ d ^⊗ suc k = d ⊗ (d ^⊗ k)
 
 /-n : ∀{n} → D (1 + n) (1 + n)
 /-n {zero}  = ∣
-/-n {suc n} = / ⊗ ∣ ^⊗ n · /-n ⊗ ∣
+/-n {suc n} = / ⊗ ∣ ^⊗ n · ∣ ⊗ /-n
 
 data _~_ : ∀ {m n} → D m n → D m n → Prop where
   ⊗ε     : ∀{m n}{d : D m n} → d ⊗ ε ~ d

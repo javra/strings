@@ -10,6 +10,14 @@ open import Diags
        → d ⊗ (e ⊗ (f ⊗ (g ⊗ h))) ~* d ⊗ e ⊗ f ⊗ g ⊗ h
 ⊗⊗⊗⊗ = ι ⊗⊗ ■ ι ⊗⊗ ■ ι ⊗⊗
 
+··· : ∀{m n k l j}{d : D m n}{e : D n k}{f : D k l}{g : D l j}
+      → d · (e · (f · g)) ~* d · e · f · g
+··· = ι ·· ■ ι ··
+
+···· : ∀{m n k l j i}{d : D m n}{e : D n k}{f : D k l}{g : D l j}{h : D j i}
+      → d · (e · (f · (g · h))) ~* d · e · f · g · h
+···· = ι ·· ■ ι ·· ■ ι ··
+
 ∣· : ∀{n}{d : D 1 n} → ∣ · d ~* d
 ∣· = ~·* (- (ι ⊗ε)) ■ ι ∣n·
 
