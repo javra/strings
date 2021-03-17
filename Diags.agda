@@ -18,7 +18,7 @@ data D : ℕ → ℕ → Set where
   ∪   : D 2 0
   /   : D 2 2        -- line crossing
   R   : ∀{n} → D n n -- the ring
-  M   : D 1 1        -- the marble
+  M   : D 1 0        -- the marble
 
 _^⊗_ : ∀{m n} → D m n → (k : ℕ) → D (k * m) (k * n)
 d ^⊗ zero  = ε
