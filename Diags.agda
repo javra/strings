@@ -29,12 +29,16 @@ d ^⊗ suc k = d ⊗ (d ^⊗ k)
 ∣n⊗∣m l d r = ∣ ^⊗ l ⊗ d ⊗ ∣ ^⊗ r
 
 /n : ∀{n} → D (1 + n) (1 + n)
-/n {zero} = ∣
+/n {zero}  = ∣
 /n {suc n} = ∣ ^⊗ n ⊗ / · /n {n} ⊗ ∣
 
 /-n : ∀{n} → D (1 + n) (1 + n)
 /-n {zero}  = ∣
 /-n {suc n} = / ⊗ ∣ ^⊗ n · ∣ ⊗ /-n
+
+X : ∀{m} → D m m
+X {zero}  = ε
+X {suc m} = /n · ∣ ⊗ X
 
 coeD : ∀{m m' n n'} → m ≡ m' → n ≡ n' → D m n → D m' n'
 coeD refl refl d = d
@@ -80,6 +84,17 @@ data _~_ : ∀ {m n} → D m n → D m n → Prop where
   /nM    : /n · ∣ ⊗ M ~ M ⊗ ∣ · /n -- naturality of braiding wrt m
   /-nM   : /-n · M ⊗ ∣ ~ ∣ ⊗ M · /-n -- naturality of braiding wrt m
   ∩·B    : ∀{l r} → ∣n⊗∣m l ∩ r · B {1} (λ {zero → l + 2 + r})
-                    ~ B {1} (λ {zero → l + r}) · ∣n⊗∣m l ∩ r --TODO generalise
+                    ~ B {1} (λ {zero → l + r}) · ∣n⊗∣m l ∩ r
+  ∩·Bl   : ∀{m m' k l p}{n : Fin m → ℕ}{n' : Fin m' → ℕ}
+            {d : D k _}{d' : D k _}{e : D _ l}{e' : D _ l}
+             → d · B n · e ~ d' · B n' · e'
+             → ∣ ^⊗ p ⊗ d · B {suc m} (λ { zero → p ; (succ x) → n x}) · ∣ ^⊗ p ⊗ e
+               ~ ∣ ^⊗ p ⊗ d' · B {suc m'} (λ { zero → p ; (succ x) → n' x}) · ∣ ^⊗ p ⊗ e'
+  ∩·Br   : ∀{m m' k l p}{n : Fin m → ℕ}{n' : Fin m' → ℕ}
+            {d : D k (sum n)}{d' : D k (sum n')}{e : D (sum n) l}{e' : D (sum n') l}
+             → d · B n · e ~ d' · B n' · e'
+             → d ⊗ ∣ ^⊗ p · B {!!} · e ⊗ _^⊗_ {1}{1} ∣ p
+               ~ d' ⊗ ∣ ^⊗ p · B {!!} · e' ⊗ ∣ ^⊗ p
+
 
 
