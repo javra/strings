@@ -3,7 +3,7 @@
 open import StrictNat public
 open import Fin public
 
-infixl 3 _■_
+infixr 3 _■_
 infixl 4 _~_
 infixl 6 _·_
 infixl 10 _⊗_
@@ -36,6 +36,9 @@ d ^⊗ suc k = d ⊗ (d ^⊗ k)
 /-n {zero}  = ∣
 /-n {suc n} = / ⊗ ∣ ^⊗ n · ∣ ⊗ /-n
 
+coeD : ∀{m m' n n'} → m ≡ m' → n ≡ n' → D m n → D m' n'
+coeD refl refl d = d
+
 data _~_ : ∀ {m n} → D m n → D m n → Prop where
   -- reflexive, symmetric, and transitive
   rfl  : ∀{m n}{d : D m n} → d ~ d
@@ -52,17 +55,16 @@ data _~_ : ∀ {m n} → D m n → D m n → Prop where
   -- monoidal category
   ⊗ε     : ∀{m n}{d : D m n} → d ⊗ ε ~ d
   ε⊗     : ∀{m n}{d : D m n} → ε ⊗ d ~ d
-  ⊗⊗     : ∀{m m' m'' n n' n''}{d : D m n}{e : D m' n'}{f : D m'' n''} → d ⊗ (e ⊗ f) ~ d ⊗ e ⊗ f
+  ⊗⊗     : ∀{m m' m'' n n' n''}{d : D m n}{e : D m' n'}{f : D m'' n''}
+              → d ⊗ (e ⊗ f) ~ d ⊗ e ⊗ f
   ·⊗·    : ∀{m n k l n' l'}{d : D m n}{e : D k l}{d' : D n n'}{e' : D l l'}
               → (d · d') ⊗ (e · e') ~ d ⊗ e · d' ⊗ e'
   ~⊗     : ∀{m n k l}{d d' : D m n}{e : D k l} → d ~ d' → d ⊗ e ~ d' ⊗ e
   ⊗~     : ∀{m n k l}{d : D m n}{e e' : D k l} → e ~ e' → d ⊗ e ~ d ⊗ e'
   -- rigid category
   ∩∪     : ∩ ⊗ ∣ · ∣ ⊗ ∪ ~ ∣
-  ∪∩     : ∣ ⊗ ∩ · ∪ ⊗ ∣ ~ ∣
   -- braiding
   ∩/     : ∩ · / ~ ∩                     -- Reidemeister type I
-  /∪     : / · ∪ ~ ∪                     -- Reidemeister type I
   ∣//∣∣∪ : ∣ ⊗ / · / ⊗ ∣ · ∣ ⊗ ∪ ~ ∪ ⊗ ∣ -- Reidemeister type II
   /∣∣/∪∣ : / ⊗ ∣ · ∣ ⊗ / · ∪ ⊗ ∣ ~ ∣ ⊗ ∪ -- Reidemeister type II
   ∩∣∣//∣ : ∩ ⊗ ∣ · ∣ ⊗ / · / ⊗ ∣ ~ ∣ ⊗ ∩ -- Reidemeister type II
@@ -77,9 +79,7 @@ data _~_ : ∀ {m n} → D m n → D m n → Prop where
   M·R    : ∀{l r} → ∣n⊗∣m l M r · R ~ R · ∣n⊗∣m l M r -- marble and ring commute
   /nM    : /n · ∣ ⊗ M ~ M ⊗ ∣ · /n -- naturality of braiding wrt m
   /-nM   : /-n · M ⊗ ∣ ~ ∣ ⊗ M · /-n -- naturality of braiding wrt m
+  ∩·B    : ∀{l r} → ∣n⊗∣m l ∩ r · B {1} (λ {zero → l + 2 + r})
+                    ~ B {1} (λ {zero → l + r}) · ∣n⊗∣m l ∩ r --TODO generalise
 
-/⁻¹ : D 2 2 
-/⁻¹ =   ∣ ⊗ ∣ ⊗   ∩
-      · ∣ ⊗   /   ⊗ ∣
-      ·   ∪   ⊗ ∣ ⊗ ∣
 
