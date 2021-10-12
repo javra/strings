@@ -66,3 +66,7 @@ mirror n p = n (inv p)
 
 mirrorMirror : ∀{m}{n : Fin m → ℕ}{p : Fin m} → mirror (mirror n) p ≡ n p
 mirrorMirror {n = n} = cong n invInv
+
+sumMirror : ∀{m}{n : Fin m → ℕ} → sum (mirror n) ≡ sum n
+sumMirror {zero} = refl
+sumMirror {suc m} = {!!}

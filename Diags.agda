@@ -1,7 +1,9 @@
 {-# OPTIONS --prop --rewriting --allow-unsolved-metas #-}
 
 open import StrictNat public
-open import Fin public
+open import Data.List public
+
+postulate sumRev : (ns : List ℕ) → sum (reverse ns) ≡ sum ns
 
 infixr 3 _■_
 infixl 4 _~_
@@ -19,7 +21,7 @@ data D : ℕ → ℕ → Set where
   /   : D 2 2                                          -- braiding
   R   : ∀{n} → D n n                                   -- ring
   M   : D 1 0                                          -- marble
-  B   : ∀{m} → (n : Fin m → ℕ) → D (sum n) (sum n)    -- board
+  B   : (ns : List ℕ) → D (sum ns) (sum ns)           -- board
 
 _^⊗_ : ∀{m n} → D m n → (k : ℕ) → D (k * m) (k * n)
 d ^⊗ zero  = ε
@@ -83,18 +85,13 @@ data _~_ : ∀ {m n} → D m n → D m n → Prop where
   M·R    : ∀{l r} → ∣n⊗∣m l M r · R ~ R · ∣n⊗∣m l M r -- marble and ring commute
   /nM    : /n · ∣ ⊗ M ~ M ⊗ ∣ · /n -- naturality of braiding wrt m
   /-nM   : /-n · M ⊗ ∣ ~ ∣ ⊗ M · /-n -- naturality of braiding wrt m
-  ∩·B    : ∀{l r} → ∣n⊗∣m l ∩ r · B {1} (λ {zero → l + 2 + r})
-                    ~ B {1} (λ {zero → l + r}) · ∣n⊗∣m l ∩ r
-  ∩·Bl   : ∀{m m' k l p}{n : Fin m → ℕ}{n' : Fin m' → ℕ}
-            {d : D k _}{d' : D k _}{e : D _ l}{e' : D _ l}
-             → d · B n · e ~ d' · B n' · e'
-             → ∣ ^⊗ p ⊗ d · B {suc m} (λ { zero → p ; (succ x) → n x}) · ∣ ^⊗ p ⊗ e
-               ~ ∣ ^⊗ p ⊗ d' · B {suc m'} (λ { zero → p ; (succ x) → n' x}) · ∣ ^⊗ p ⊗ e'
-  ∩·Br   : ∀{m m' k l p}{n : Fin m → ℕ}{n' : Fin m' → ℕ}
-            {d : D k (sum n)}{d' : D k (sum n')}{e : D (sum n) l}{e' : D (sum n') l}
-             → d · B n · e ~ d' · B n' · e'
-             → d ⊗ ∣ ^⊗ p · B {!!} · e ⊗ _^⊗_ {1}{1} ∣ p
-               ~ d' ⊗ ∣ ^⊗ p · B {!!} · e' ⊗ ∣ ^⊗ p
-
+  ∩·B    : ∀{l r} → ∣n⊗∣m l ∩ r · B [ l + r + 2 ] ~ B [ l + r ] · ∣n⊗∣m l ∩ r
+  ∩·B'   : ∀{k l p}{ns : List ℕ}{ns' : List ℕ}{d : D k _}{d' : D k _}{e : D _ l}{e' : D _ l}
+             → d · B ns · e ~ d' · B ns' · e'
+             → ∣ ^⊗ p ⊗ d · B (p ∷ ns) · ∣ ^⊗ p ⊗ e ~ ∣ ^⊗ p ⊗ d' · B (p ∷ ns') · ∣ ^⊗ p ⊗ e'
+  X·B·X  : ∀{ns} → let B' = coeD (sumRev ns) (sumRev ns) (B (reverse ns)) in
+                   X · B ns · X ~ B' -- coherence of board with half-twist
+  /nB    : ∀{ns} → /n · ∣ ⊗ B ns ~ B ns ⊗ ∣ · /n  -- naturality of braiding wrt to board
+  /-nB   : ∀{ns} → /-n · B ns ⊗ ∣ ~ ∣ ⊗ B ns · /-n  -- naturality of braiding wrt to board
 
 
