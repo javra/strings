@@ -35,14 +35,24 @@ d ^⊗ suc k = d ⊗ (d ^⊗ k)
 ∣n⊗∣m : ∀{m n} → (l : ℕ) → D m n → (r : ℕ) → D (l + m + r) (l + n + r)
 ∣n⊗∣m l d r = ∣ ^⊗ l ⊗ d ⊗ ∣ ^⊗ r
 
+-- braiding c_{1,n}
 /n : ∀{n} → D (1 + n) (1 + n)
 /n {zero}  = ∣
 /n {suc n} = ∣ ^⊗ n ⊗ / · /n {n} ⊗ ∣
 
+-- braiding c_{n,1}
 /-n : ∀{n} → D (1 + n) (1 + n)
 /-n {zero}  = ∣
 /-n {suc n} = / ⊗ ∣ ^⊗ n · ∣ ⊗ /-n
 
+-- braiding c_{m,n}
+/mn : ∀{m n} → D (m + n) (n + m)
+/mn {zero}  {zero}  = ε
+/mn {suc m} {zero}  = /n
+/mn {zero}  {suc n} = ∣ ^⊗ _
+/mn {suc m} {suc n} = /n · ∣ ⊗ /mn {suc m} {n}
+
+-- half-twist h_n
 X : ∀{m} → D m m
 X {zero}  = ε
 X {suc m} = /n · ∣ ⊗ X
