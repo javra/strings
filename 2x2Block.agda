@@ -8,7 +8,7 @@ open import Sliding
 open import InverseBraiding
 
 2x2Block : D 4 4
-2x2Block = {!!}
+2x2Block = B (replicate 4 1)
 
 puzzle : D 0 0
 puzzle =     ∩   ⊗   ∩

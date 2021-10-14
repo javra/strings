@@ -2,8 +2,13 @@
 
 open import StrictNat public
 open import Data.List public
+open import Data.List.Properties public
 
-postulate sumRev : (ns : List ℕ) → sum (reverse ns) ≡ sum ns
+sumRev : (ns : List ℕ) → sum (reverse ns) ≡ sum ns
+sumRev [] = refl
+sumRev (n ∷ ns) = trans (trans (cong sum (reverse-++-commute [ n ] ns))
+                    (trans (sum-++-commute (reverse ns) [ n ]) (+-comm _ n)))
+                    (cong (λ m → n + m) (sumRev ns))
 
 infixr 3 _■_
 infixl 4 _~_
@@ -20,7 +25,7 @@ data D : ℕ → ℕ → Set where
   ∪   : D 2 0                                          -- evaluation
   /   : D 2 2                                          -- braiding
   R   : ∀{n} → D n n                                   -- ring
-  M   : D 1 0                                          -- marble
+  M   : D 0 1                                          -- marble
   B   : (ns : List ℕ) → D (sum ns) (sum ns)           -- board
 
 _^⊗_ : ∀{m n} → D m n → (k : ℕ) → D (k * m) (k * n)
@@ -83,10 +88,11 @@ data _~_ : ∀ {m n} → D m n → D m n → Prop where
   /nR    : ∀{n} → /n {n} · ∣ ⊗ R ~ R ⊗ ∣ · /n -- naturality of braiding wrt ring
   /-nR   : ∀{n} → /-n {n} · R ⊗ ∣ ~ ∣ ⊗ R · /-n -- naturality of braiding wrt ring
   M·R    : ∀{l r} → ∣n⊗∣m l M r · R ~ R · ∣n⊗∣m l M r -- marble and ring commute
-  /nM    : /n · ∣ ⊗ M ~ M ⊗ ∣ · /n -- naturality of braiding wrt m
-  /-nM   : /-n · M ⊗ ∣ ~ ∣ ⊗ M · /-n -- naturality of braiding wrt m
+  /M     : ∣ ⊗ M ~ M ⊗ ∣ · / -- naturality of braiding wrt m
+  /-M    : M ⊗ ∣ ~ ∣ ⊗ M · / -- naturality of braiding wrt m
   ∩·B    : ∀{l r} → ∣n⊗∣m l ∩ r · B [ l + r + 2 ] ~ B [ l + r ] · ∣n⊗∣m l ∩ r
-  ∩·B'   : ∀{k l p}{ns : List ℕ}{ns' : List ℕ}{d : D k _}{d' : D k _}{e : D _ l}{e' : D _ l}
+  ∪·B    : ∀{l r} → ∣n⊗∣m l ∪ r · B [ l + r ] ~ B [ l + r + 2 ] · ∣n⊗∣m l ∪ r
+  ∷B     : ∀{k l p}{ns : List ℕ}{ns' : List ℕ}{d : D k _}{d' : D k _}{e : D _ l}{e' : D _ l}
              → d · B ns · e ~ d' · B ns' · e'
              → ∣ ^⊗ p ⊗ d · B (p ∷ ns) · ∣ ^⊗ p ⊗ e ~ ∣ ^⊗ p ⊗ d' · B (p ∷ ns') · ∣ ^⊗ p ⊗ e'
   X·B·X  : ∀{ns} → let B' = coeD (sumRev ns) (sumRev ns) (B (reverse ns)) in
