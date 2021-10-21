@@ -3,6 +3,8 @@
 This repository contains a formalisation of string diagrams used to
 solve ring-and rope puzzles.
 
+Tested with Agda 2.6.0.1 (might be fragile due to the use of rewrite pragmas)
+
 ## Structure
 
 * `StrictNat.agda` a version of the natural numbers strictified by some additional rewrite rules.
