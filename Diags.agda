@@ -47,10 +47,8 @@ d ^⊗ suc k = d ⊗ (d ^⊗ k)
 
 -- braiding c_{m,n}
 /mn : ∀{m n} → D (m + n) (n + m)
-/mn {zero}  {zero}  = ε
-/mn {suc m} {zero}  = /n
-/mn {zero}  {suc n} = ∣ ^⊗ _
-/mn {suc m} {suc n} = /n · ∣ ⊗ /mn {suc m} {n}
+/mn {m} {zero}  = ∣ ^⊗ m
+/mn {m} {suc n} = /n {m} ⊗ ∣ ^⊗ n · ∣ ⊗ /mn {m}{n}
 
 -- half-twist h_n
 X : ∀{m} → D m m
