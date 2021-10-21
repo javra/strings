@@ -15,6 +15,7 @@ open import Identities
 /n+ {m} {suc n} = ·~ (~⊗ (/n+ {m} {n}) ■ - ⊗∣·⊗∣ ■ ·~ (-⊗⊗ ■ ⊗~ (- ∣^⊗suc))) ■ ··
                   ■ ~· (~· (~⊗ ∣^⊗+ ■ -⊗⊗) ■ ·~ -⊗⊗ ■ ∣n⊗·∣n⊗)
 
+-- Naturality of /n
 /n·∣⊗ : ∀{m n}{d : D m n} → /n · ∣ ⊗ d ~ d ⊗ ∣ · /n
 /n·∣⊗ {d = ε}     = ·~ (⊗ε) ■ - (~· (ε⊗))
 /n·∣⊗ {d = ∣}     = ·∣∣ ■ - ∣∣·
@@ -47,6 +48,7 @@ open import Identities
 /-n+ {suc m} {n} = ·~ (⊗~ (/-n+ {m} {n}) ■ - ∣⊗·∣⊗ ■ ·~ (⊗⊗)) ■ ··
                    ■ ~· (~· (⊗~ (∣^⊗+ {m}{n}) ■ ⊗⊗) ■ ·~ (⊗⊗) ■ ⊗∣n·⊗∣n)
 
+-- Naturality of /-n
 /-n·⊗∣ : ∀{m n}{d : D m n} → /-n · d ⊗ ∣ ~ ∣ ⊗ d · /-n
 /-n·⊗∣ {d = ε}     = ∣· ■ ε⊗ ■ - (⊗ε) ■ - ·∣
 /-n·⊗∣ {d = ∣}     = ·∣∣ ■ - ∣∣·
@@ -74,6 +76,7 @@ open import Identities
 ∣n∩/-n∣n∪ = ~· (·~ (~⊗ /-nsuc ■ - ⊗∣·⊗∣ ■ ~· -⊗⊗) ■ ·· ■ ~· (- (·⊗·) ■ ⊗~ ·∣∣))
             ■ ⊗∩·⊗/∣·⊗∪ ■ ·∣n ■ ·~ (- ∣^⊗suc) ■ ·∣n ■ ∣n·
 
+-- The downwards bracket over n strings
 ∩n : ∀{n} → D n (n + 2)
 ∩n {n} = ∣ ^⊗ n ⊗ ∩ · /n ⊗ ∣
 
@@ -82,6 +85,7 @@ open import Identities
          ■ ·· ■ ~· (·~ -⊗⊗ ■ - (·⊗·) ■ ~⊗ (∣n·) ■ ⊗~ ·∣∣)
          ■ ~· (~⊗ (- (·∣n)) ■ - ·⊗∩) ■ -··
 
+-- The upwards bracket over n strings
 ∪n : ∀{n} → D (n + 2) n
 ∪n {n} = ∣ ⊗ /n · ∪ ⊗ ∣ ^⊗ n
 
@@ -89,6 +93,7 @@ open import Identities
 ∣⊗∣·∪n = ·· ■ ~· (~· -⊗⊗ ■ - (·⊗·) ■ ⊗~ (- /n·∣⊗) ■ ·⊗·) ■ -··
          ■ ·~ (~· (⊗⊗) ■ - (·⊗·) ■ ⊗~ (·∣n) ■ ~⊗ ∣∣· ■ ⊗~ (- (∣n·)) ■ - ∪⊗·) ■ ··
 
+-- The downwards bracket under n strings
 ∩-n : ∀{n} → D n (n + 2)
 ∩-n {n} = ∩ ⊗ ∣ ^⊗ n · ∣ ⊗ /-n
 
@@ -96,6 +101,7 @@ open import Identities
 ∩-n·∣⊗∣ = -·· ■ ·~ (·~ -⊗⊗ ■ - (·⊗·) ■ ⊗~ /-n·⊗∣ ■ ·⊗·) ■ ·· ■ ~· (·~ (⊗⊗) ■ ⊗∣n·∣∣⊗)
           ■ ~· (- ·⊗∣n) ■ -··
 
+-- The upwards bracket under n strings
 ∪-n : ∀{n} → D (n + 2) n
 ∪-n {n} = /-n ⊗ ∣ · ∣ ^⊗ n ⊗ ∪
 
