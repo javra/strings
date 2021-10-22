@@ -55,6 +55,23 @@ X : ∀{m} → D m m
 X {zero}  = ε
 X {suc m} = /n · ∣ ⊗ X
 
+
+-- inverse of c_{1,1}
+/⁻¹ : D 2 2 
+/⁻¹ =   ∣ ⊗ ∣ ⊗   ∩
+      · ∣ ⊗   /   ⊗ ∣
+      ·   ∪   ⊗ ∣ ⊗ ∣
+
+-- inverse of c_{1,n}
+/n⁻¹ : ∀{n} → D (1 + n) (1 + n)
+/n⁻¹ {zero}  = ∣
+/n⁻¹ {suc n} = /n⁻¹ ⊗ ∣ · ∣ ^⊗ n ⊗ /⁻¹
+
+-- inverse of the half-twist
+X⁻¹ : ∀{n} → D n n
+X⁻¹ {zero}  = ε
+X⁻¹ {suc n} = ∣ ⊗ X⁻¹ · /n⁻¹
+
 coeD : ∀{m m' n n'} → m ≡ m' → n ≡ n' → D m n → D m' n'
 coeD refl refl d = d
 
@@ -104,7 +121,7 @@ data _~_ : ∀ {m n} → D m n → D m n → Prop where
              → d · B ns · e ~ d' · B ns' · e'
              → ∣ ^⊗ p ⊗ d · B (p ∷ ns) · ∣ ^⊗ p ⊗ e ~ ∣ ^⊗ p ⊗ d' · B (p ∷ ns') · ∣ ^⊗ p ⊗ e'
   X·B·X  : ∀{ns} → let B' = coeD (sumRev ns) (sumRev ns) (B (reverse ns)) in
-                   X · B ns · X ~ B' -- coherence of board with half-twist
+                   X · B ns · X⁻¹ ~ B' -- coherence of board with half-twist
   /nB    : ∀{ns} → /n · ∣ ⊗ B ns ~ B ns ⊗ ∣ · /n  -- naturality of braiding wrt to board
   /-nB   : ∀{ns} → /-n · B ns ⊗ ∣ ~ ∣ ⊗ B ns · /-n  -- naturality of braiding wrt to board
 
