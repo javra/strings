@@ -115,8 +115,9 @@ data _~_ : ∀ {m n} → D m n → D m n → Prop where
   M·R    : ∀{l r} → ∣n⊗∣m l M r · R ~ R · ∣n⊗∣m l M r -- marble and ring commute
   /M     : ∣ ⊗ M ~ M ⊗ ∣ · / -- naturality of braiding wrt m
   /-M    : M ⊗ ∣ ~ ∣ ⊗ M · / -- naturality of braiding wrt m
-  ∩·B    : ∀{l r} → ∣n⊗∣m l ∩ r · B [ l + r + 2 ] ~ B [ l + r ] · ∣n⊗∣m l ∩ r
-  ∪·B    : ∀{l r} → ∣n⊗∣m l ∪ r · B [ l + r ] ~ B [ l + r + 2 ] · ∣n⊗∣m l ∪ r
+  ∩[B]   : ∀{l r} → ∣n⊗∣m l ∩ r · B [ l + r + 2 ] ~ B [ l + r ] · ∣n⊗∣m l ∩ r -- ∩ moves through board
+  ∪[B]   : ∀{l r} → ∣n⊗∣m l ∪ r · B [ l + r ] ~ B [ l + r + 2 ] · ∣n⊗∣m l ∪ r -- ∪ moves through board
+  /[B]   : ∀{l r} → ∣n⊗∣m l / r · B [ l + r + 2 ] ~ B [ l + r + 2 ] · ∣n⊗∣m l / r -- / moves through board
   ∷B     : ∀{k l p}{ns : List ℕ}{ns' : List ℕ}{d : D k _}{d' : D k _}{e : D _ l}{e' : D _ l}
              → d · B ns · e ~ d' · B ns' · e'
              → ∣ ^⊗ p ⊗ d · B (p ∷ ns) · ∣ ^⊗ p ⊗ e ~ ∣ ^⊗ p ⊗ d' · B (p ∷ ns') · ∣ ^⊗ p ⊗ e'
