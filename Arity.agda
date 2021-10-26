@@ -10,6 +10,10 @@ open import Diags
        → d ⊗ (e ⊗ (f ⊗ (g ⊗ h))) ~ d ⊗ e ⊗ f ⊗ g ⊗ h
 ⊗⊗⊗⊗ = ⊗⊗ ■ ⊗⊗ ■ ⊗⊗
 
+⊗⊗⊗⊗⊗ : ∀{j j' k k' l l' m m' n n' o o'}{d : D j j'}{e : D k k'}{f : D l l'}{g : D m m'}{h : D n n'}{i : D o o'}
+       → d ⊗ (e ⊗ (f ⊗ (g ⊗ (h ⊗ i)))) ~ d ⊗ e ⊗ f ⊗ g ⊗ h ⊗ i
+⊗⊗⊗⊗⊗ = ⊗⊗ ■ ⊗⊗ ■ ⊗⊗ ■ ⊗⊗
+
 ··· : ∀{m n k l j}{d : D m n}{e : D n k}{f : D k l}{g : D l j}
       → d · (e · (f · g)) ~ d · e · f · g
 ··· = ·· ■ ··
@@ -47,3 +51,6 @@ open import Diags
 
 ·∣∣∣∣∣ : ∀{n}{d : D n 5} → d · ∣ ⊗ ∣ ⊗ ∣ ⊗ ∣ ⊗ ∣ ~ d
 ·∣∣∣∣∣ = ·~ (- (⊗⊗ ■ ⊗⊗ ■ ⊗⊗ ■ (⊗~ ⊗ε))) ■ ·∣n
+
+∣∣∣∣∣∣· : ∀{n}{d : D 6 n} → ∣ ⊗ ∣ ⊗ ∣ ⊗ ∣ ⊗ ∣ ⊗ ∣ · d ~ d
+∣∣∣∣∣∣· = ~· (⊗~ (- ⊗ε) ■ - ⊗⊗⊗⊗⊗) ■ ∣n·
