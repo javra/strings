@@ -4,7 +4,6 @@ open import Diags
 open import Arity
 open import Identities
 open import Sliding
-open import InverseBraiding
 
 /nsuc : ∀{n} → /n {suc n} ~ ∣ ⊗ /n · / ⊗ ∣ ^⊗ n
 /nsuc {zero} = ·∣∣ ■ ε⊗ ■ - ⊗ε ■ - ∣∣·
