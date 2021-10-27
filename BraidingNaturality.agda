@@ -63,16 +63,23 @@ open import Sliding
 /-n·⊗∣ {d = M}     = ·~ /-M ■ ∣· ■ ·~ (- ⊗ε ■ - ·∣∣)
 /-n·⊗∣ {d = B ns}  = /-nB
 
-/mn·∣⊗ : ∀{m n k}{d : D m n} → /mn{m}{k} · ∣ ^⊗ k ⊗ d ~ d ⊗ ∣ ^⊗ k · /mn{n}{k}
+/mn·∣⊗ : ∀{m n k}{d : D m n} → /mn m k · ∣ ^⊗ k ⊗ d ~ d ⊗ ∣ ^⊗ k · /mn n k
 /mn·∣⊗ {k = zero}  = ∣n· ■ ε⊗ ■ - ⊗ε ■ - ·∣n
 /mn·∣⊗ {k = suc k} = ··~ (·~ -⊗⊗ ■ ∣⊗·∣⊗ ■ ⊗~ (/mn·∣⊗ {k = k}) ■ - ∣⊗·∣⊗)
                      ■ ~·· (·~ ⊗⊗ ■ - ·⊗· ■ ~⊗ /n·∣⊗ ■ ·⊗· ■ ~· -⊗⊗) ■ -··
 
-/0n : ∀{n} → /mn{0}{n} ~ ∣ ^⊗ n
+/0n : ∀{n} → /mn 0 n ~ ∣ ^⊗ n
 /0n {zero}  = rfl
 /0n {suc n} = ∣⊗·∣⊗ ■ ⊗~ (∣n· ■ /0n)
 
-/sucmn : ∀{m n} → /mn{suc m}{n} ~ ∣ ^⊗ m ⊗ /-n {n} · /mn{m}{n} ⊗ ∣
+/1n : ∀{n} → /mn 1 n ~ /-n
+/1n {zero}  = ⊗ε
+/1n {suc n} = ·~ (⊗~ /1n) ■ ~· (~⊗ (·∣∣ ■ ε⊗))
+
+/n1 : ∀{n} → /mn n 1 ~ /n
+/n1 {n} = ·∣n ■ ⊗ε
+
+/sucmn : ∀{m n} → /mn (suc m) n ~ ∣ ^⊗ m ⊗ /-n {n} · /mn m n ⊗ ∣
 /sucmn {n = zero}  = ∣^⊗suc ■ ~⊗ (- ∣n·) ■ - ⊗∣·⊗∣
 /sucmn {n = suc n} = ·~ (⊗~ (/sucmn {n = n}))
                      ■ ·~ (- ∣⊗·∣⊗) ■ ~· (- ⊗∣n·⊗∣n)
@@ -80,7 +87,7 @@ open import Sliding
                       ■ - (~· (⊗⊗ ■ ~⊗ (- ∣^⊗suc)) ■ ·~ (-⊗⊗ ■ ⊗~ (- ∣^⊗suc)) ■ ∣n⊗·⊗∣m)) ■ ··)
                      ■ ·~ ⊗⊗ ■ -·· ■ ~· ∣n⊗·∣n⊗ ■ ·~ ⊗∣·⊗∣
 
-/mn·⊗∣ : ∀{m n k}{d : D m n} → /mn{k}{m} · d ⊗ ∣ ^⊗ k ~ ∣ ^⊗ k ⊗ d · /mn{k}{n}
+/mn·⊗∣ : ∀{m n k}{d : D m n} → /mn k m · d ⊗ ∣ ^⊗ k ~ ∣ ^⊗ k ⊗ d · /mn k n
 /mn·⊗∣ {k = zero} = ~· /0n ■ ∣n· ■ ⊗ε ■ - ε⊗ ■ - ·∣n ■ ·~ (- /0n)
 /mn·⊗∣ {m}{n}{suc k}{d} = ~· (/sucmn {k})
                           ■ ··~ (·~ (⊗~ ∣^⊗suc ■ ⊗⊗) ■ ⊗∣·⊗∣ ■ ~⊗ (/mn·⊗∣ {m} {n} {k}) ■ - ⊗∣·⊗∣)
@@ -89,5 +96,5 @@ open import Sliding
 
 -- Naturality of /mn
 /mn·⊗ : ∀{m n k l}{d : D m n}{e : D k l}
-  → /mn{k}{m} · d ⊗ e ~ e ⊗ d · /mn{l}{n}
+  → /mn k m · d ⊗ e ~ e ⊗ d · /mn l n
 /mn·⊗ = ·~ (- ∣n⊗·⊗∣m) ■ ~·· /mn·∣⊗ ■ ··~ /mn·⊗∣ ■ ~·· ⊗∣n·∣m⊗

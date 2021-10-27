@@ -35,20 +35,20 @@ d ^⊗ suc k = d ⊗ (d ^⊗ k)
 ∣n⊗∣m : ∀{m n} → (l : ℕ) → D m n → (r : ℕ) → D (l + m + r) (l + n + r)
 ∣n⊗∣m l d r = ∣ ^⊗ l ⊗ d ⊗ ∣ ^⊗ r
 
--- braiding c_{1,n}
+-- braiding c_{n,1}
 /n : ∀{n} → D (1 + n) (1 + n)
 /n {zero}  = ∣
 /n {suc n} = ∣ ^⊗ n ⊗ / · /n {n} ⊗ ∣
 
--- braiding c_{n,1}
+-- braiding c_{1,n}
 /-n : ∀{n} → D (1 + n) (1 + n)
 /-n {zero}  = ∣
 /-n {suc n} = / ⊗ ∣ ^⊗ n · ∣ ⊗ /-n
 
 -- braiding c_{m,n}
-/mn : ∀{m n} → D (m + n) (n + m)
-/mn {m} {zero}  = ∣ ^⊗ m
-/mn {m} {suc n} = /n {m} ⊗ ∣ ^⊗ n · ∣ ⊗ /mn {m}{n}
+/mn : ∀ m n → D (m + n) (n + m)
+/mn m zero    = ∣ ^⊗ m
+/mn m (suc n) = /n ⊗ ∣ ^⊗ n · ∣ ⊗ /mn m n
 
 -- half-twist h_n
 X : ∀{m} → D m m
@@ -62,10 +62,20 @@ X {suc m} = /n · ∣ ⊗ X
       · ∣ ⊗   /   ⊗ ∣
       ·   ∪   ⊗ ∣ ⊗ ∣
 
--- inverse of c_{1,n}
+-- inverse of c_{n,1}
 /n⁻¹ : ∀{n} → D (1 + n) (1 + n)
 /n⁻¹ {zero}  = ∣
 /n⁻¹ {suc n} = /n⁻¹ ⊗ ∣ · ∣ ^⊗ n ⊗ /⁻¹
+
+-- inverse of c_{1,n}
+/-n⁻¹ : ∀{n} → D (1 + n) (1 + n)
+/-n⁻¹ {zero}  = ∣
+/-n⁻¹ {suc n} = ∣ ⊗ /-n⁻¹ · /⁻¹ ⊗ ∣ ^⊗ n
+
+-- inverse of c_{m,n}
+/mn⁻¹ : ∀ m n → D (n + m) (m + n)
+/mn⁻¹ m zero    = ∣ ^⊗ m
+/mn⁻¹ m (suc n) = ∣ ⊗ /mn⁻¹ m n · /n⁻¹ ⊗ ∣ ^⊗ n
 
 -- inverse of the half-twist
 X⁻¹ : ∀{n} → D n n
