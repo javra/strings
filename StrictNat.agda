@@ -6,6 +6,15 @@ open import Data.Nat.Properties public
 
 {-# BUILTIN REWRITE _≡_ #-}
 {-# REWRITE *-identityʳ #-}
+{-# REWRITE *-assoc #-}
+{-# REWRITE *-distribʳ-+ #-}
 {-# REWRITE +-identityʳ #-}
+{-# REWRITE *-zeroʳ #-}
 {-# REWRITE +-assoc #-}
 {-# REWRITE +-suc #-}
+
+
+*-suc : ∀{m n : ℕ} → m * (suc n) ≡ m * n + m
+*-suc {m}{n} = *-distribˡ-+ m n 1
+
+{-# REWRITE *-suc #-}
