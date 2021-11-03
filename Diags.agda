@@ -12,8 +12,8 @@ sumRev (n ∷ ns) = trans (trans (cong sum (reverse-++-commute [ n ] ns))
 
 infixr 3 _■_
 infixl 4 _~_
-infixl 7 _·_
-infixl 6 _•_
+infixl 6 _·_
+infixl 7 _•_
 infixl 10 _⊗_
 infixl 10 _⨂_
 infixl 11 _^⊗_
@@ -92,6 +92,7 @@ X {suc m} = /n • (1 > X < 0)
 X⁻¹ : ∀{n} → D n n -- inverse of the half-twist
 X⁻¹ {zero}  = ε
 X⁻¹ {suc n} = (1 > X⁻¹ < 0) • /n⁻¹
+
 {-
 coeD : ∀{m m' n n'} → m ≡ m' → n ≡ n' → D m n → D m' n'
 coeD refl refl d = d
@@ -117,71 +118,21 @@ data _~_ : ∀ {m n} → D m n → D m n → Prop where
   ∣∩/∣∣/ : ∀{l r o}{f : D o (l + r + 1)} → f · (l + 1) >A ∩ < r · l >A / < (r + 1) · (l + 1) >A / < r ~ f · l >A ∩ < (r + 1)  -- Reidemeister type II
   ///    : ∀{l r o}{f : D o (l + r + 3)} → f · l >A / < (r + 1) · (l + 1) >A / < r · l >A / < (r + 1)
                                          ~ f · (l + 1) >A / < r · l >A / < (r + 1) · (l + 1) >A / < r -- Reidemeister Type III
+  -- rigid components
+  ∩·R    : ∀{l l' r r' o}{f : D o (l' + l + r + r')} → f · (l' + l) >A ∩ < (r + r') · (l' >A R {l + 2 + r} < r')
+                                                     ~ f · (l' >A R {l + r} < r') · ((l' + l) >A ∩ < (r + r')) -- string moves through ring
+  ∪·R    : ∀{l l' r r' o}{f : D o (l' + l + 2 + r + r')} → f · (l' + l) >A ∪ < (r + r') · (l' >A R {l + r} < r')
+                                                         ~ f · (l' >A R {l + 2 + r} < r') · ((l' + l) >A ∪ < (r + r')) -- string moves through ring
+  /·R    : ∀{l l' r r' o}{f : D o (l' + l + 2 + r + r')} → f · (l' + l) >A / < (r + r') · (l' >A R {l + 2 + r} < r')
+                                                         ~ f · (l' >A R {l + 2 + r} < r') · ((l' + l) >A / < (r + r')) -- braiding moves through ring
+  /nR    : ∀{l r o n}{f : D o (l + 1 + n + r)} → f • (l > /n {n} < r) · (l + 1) >A R {n} < r
+                                               ~ (f · (l >A R {n} < (1 + r))) • (l > /n {n} < r) -- naturality of braiding wrt ring
 
-ε⊗ : ∀{m n}{c : C m n} → ε ⊗ c ~ ∣n · c
-ε⊗ {c = l >A a < r} = rfl
-
-><~ : ∀{m n l r}{d d' : D m n} → d ~ d' → l > d < r ~ l > d' < r
-><~ rfl                     = rfl
-><~ (- p)                   = - (><~ p)
-><~ (p ■ q)                 = ><~ p ■ ><~ q
-><~ (~· {c = l >A a < r} p) = ~· (><~ p)
-><~ ↓↑                      = ↓↑
-><~ ∩∪                      = ∩∪
-><~ ∩/                      = ∩/
-><~ ∣//∣∣∪                  = ∣//∣∣∪
-><~ /∣∣/∪∣                  = /∣∣/∪∣
-><~ ∩∣∣//∣                  = ∩∣∣//∣
-><~ ∣∩/∣∣/                  = ∣∩/∣∣/
-><~ ///                     = ///
-
-><+ : ∀{m n l r l' r'}{d : D m n} → l' > (l > d < r) < r' ~ (l' + l) > d < (r + r')
-><+ {d = ∣n}             = rfl
-><+ {d = d · l >A a < r} = ~· ><+
-
-><0 : ∀{m n}{d : D m n} → 0 > d < 0 ~ d
-><0 {d = ∣n}             = rfl
-><0 {d = d · l >A a < r} = ~· ><0
-
-~⊗ : ∀{m n k l}{d d' : D m n}{c : C k l} → d ~ d' → d ⊗ c ~ d' ⊗ c
-~⊗ {c = _ >A _ < _} p = ~· (><~ p)
-
-•~ : ∀{m n k}{d : D m n}{e e' : D n k} → e ~ e' → d • e ~ d • e'
-•~ rfl     = rfl
-•~ (- p)   = - (•~ p)
-•~ (p ■ q) = •~ p ■ •~ q
-•~ (~· p)  = ~· (•~ p)
-•~ ↓↑      = ↓↑
-•~ ∩∪      = ∩∪
-•~ ∩/      = ∩/
-•~ ∣//∣∣∪  = ∣//∣∣∪
-•~ /∣∣/∪∣  = /∣∣/∪∣
-•~ ∩∣∣//∣  = ∩∣∣//∣
-•~ ∣∩/∣∣/  = ∣∩/∣∣/
-•~ ///     = ///
-
-•• : ∀{m n k l}{d₁ : D m n}{d₂ : D n k}{d₃ : D k l} → d₁ • (d₂ • d₃) ~ d₁ • d₂ • d₃
-•• {d₃ = ∣n}     = rfl
-•• {d₃ = d₃ · c} = ~· (•• {d₃ = d₃})
-
->•< : ∀{m n k l r}{d : D m n}{e : D n k} → l > (d • e) < r ~ (l > d < r) • (l > e < r)
->•< {e = ∣n}               = rfl
->•< {e = e · (l >A a < r)} = ~· (>•< {e = e})
-
-⨂⊗ : ∀{m₁ m₂ m₃ n₁ n₂ n₃}{d : D m₁ n₁}{e : D m₂ n₂}{c : C m₃ n₃} → d ⨂ e ⊗ c ~ d ⨂ (e ⊗ c)
-⨂⊗ {e = e}{c = l >A a < r} = ~· ({!!})
-
-⨂⨂ : ∀{m₁ m₂ m₃ n₁ n₂ n₃}{d : D m₁ n₁}{e : D m₂ n₂}{c : D m₃ n₃} → d ⨂ (e ⨂ c) ~ (d ⨂ e) ⨂ c
-⨂⨂ {d}{e}{c} = {!!}
 
 {-
 TODO model these...
 data _~_ : ∀ {m n} → D m n → D m n → Prop where
   -- rigid components
-  ∩·R    : ∀{l r} → ∣n⊗∣m l ∩ r · R ~ R · ∣n⊗∣m l ∩ r -- string moves through ring
-  ∪·R    : ∀{l r} → ∣n⊗∣m l ∪ r · R ~ R · ∣n⊗∣m l ∪ r -- string moves through ring
-  /·R    : ∀{l r} → ∣n⊗∣m l / r · R ~ R · ∣n⊗∣m l / r -- braiding moves through ring
-  /nR    : ∀{n} → /n {n} · ∣ ⊗ R ~ R ⊗ ∣ · /n -- naturality of braiding wrt ring
   /-nR   : ∀{n} → /-n {n} · R ⊗ ∣ ~ ∣ ⊗ R · /-n -- naturality of braiding wrt ring
   M·R    : ∀{l r} → ∣n⊗∣m l M r · R ~ R · ∣n⊗∣m l M r -- marble and ring commute
   /M     : ∣ ⊗ M ~ M ⊗ ∣ · / -- naturality of braiding wrt m
