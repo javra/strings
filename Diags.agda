@@ -106,8 +106,8 @@ data _~_ : ∀ {m n} → D m n → D m n → Prop where
   -- congruence
   ~·   : ∀{m n k}{d d' : D m n}{c : C n k} → d ~ d' → d · c ~ d' · c
   -- sliding law
-  ↓↑   : ∀{m n m' n' l r o}{f : D o (l + m + m' + r)}{d : A m n}{e : A m' n'}
-         → f · l >A d < (m' + r) · (l + n) >A e < r ~ f · (l + m) >A e < r · l >A d < (n' + r)
+  ↓↑   : ∀{m n m' n' l r i o}{f : D o (l + m + i + m' + r)}{d : A m n}{e : A m' n'}
+         → f · l >A d < (i + m' + r) · (l + n + i) >A e < r ~ f · (l + m + i) >A e < r · l >A d < (i + n' + r)
   -- rigid category
   ∩∪     : ∀{l r o}{f : D o (l + r + 1)} → f · l >A ∩ < (r + 1) · (l + 1) >A ∪ < r ~ f
   -- braiding
@@ -127,6 +127,8 @@ data _~_ : ∀ {m n} → D m n → D m n → Prop where
                                                          ~ f · (l' >A R {l + 2 + r} < r') · ((l' + l) >A / < (r + r')) -- braiding moves through ring
   /nR    : ∀{l r o n}{f : D o (l + 1 + n + r)} → f • (l > /n {n} < r) · (l + 1) >A R {n} < r
                                                ~ (f · (l >A R {n} < (1 + r))) • (l > /n {n} < r) -- naturality of braiding wrt ring
+  /-nR   : ∀{l r o n}{f : D o (l + 1 + n + r)} → f • (l > /n {n} < r) · l >A R {n} < (r + 1)
+                                               ~ (f · ((l + 1) >A R {n} < r)) • (l > /n {n} < r) -- naturality of braiding wrt ring
 
 
 {-
